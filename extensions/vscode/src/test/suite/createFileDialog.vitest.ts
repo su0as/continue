@@ -1,10 +1,10 @@
-import * as assert from 'assert';
+import { describe, it, expect } from 'vitest';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ApplyToFilePayload } from 'core';
 
-suite('Create File Dialog Test Suite', () => {
-  test('Should set showSaveDialog flag for new files', () => {
+describe('Create File Dialog Test Suite', () => {
+  it('Should set showSaveDialog flag for new files', () => {
     // Test payload for creating a new file
     const payload: ApplyToFilePayload = {
       streamId: 'test-stream-id',
@@ -13,20 +13,20 @@ suite('Create File Dialog Test Suite', () => {
       showSaveDialog: true,
     };
 
-    assert.strictEqual(payload.showSaveDialog, true);
-    assert.strictEqual(payload.filepath, 'src/components/NewComponent.tsx');
+    expect(payload.showSaveDialog).toBe(true);
+    expect(payload.filepath).toBe('src/components/NewComponent.tsx');
   });
 
-  test('Should extract filename from filepath for defaultUri', () => {
+  it('Should extract filename from filepath for defaultUri', () => {
     const testFilepath = 'src/utils/helper.ts';
     const filename = path.basename(testFilepath);
     const dirname = path.dirname(testFilepath);
 
-    assert.strictEqual(filename, 'helper.ts');
-    assert.strictEqual(dirname, 'src/utils');
+    expect(filename).toBe('helper.ts');
+    expect(dirname).toBe('src/utils');
   });
 
-  test('Should not show dialog for existing files', () => {
+  it('Should not show dialog for existing files', () => {
     // Test payload for applying to existing file
     const payload: ApplyToFilePayload = {
       streamId: 'test-stream-id',
@@ -35,22 +35,22 @@ suite('Create File Dialog Test Suite', () => {
       showSaveDialog: false,
     };
 
-    assert.strictEqual(payload.showSaveDialog, false);
+    expect(payload.showSaveDialog).toBe(false);
   });
 
-  test('Should handle filepath with just filename', () => {
+  it('Should handle filepath with just filename', () => {
     const testFilepath = 'newfile.js';
     const dirname = path.dirname(testFilepath);
 
-    assert.strictEqual(dirname, '.');
+    expect(dirname).toBe('.');
   });
 
-  test('Should handle nested directory paths', () => {
+  it('Should handle nested directory paths', () => {
     const testFilepath = 'src/features/auth/components/LoginForm.tsx';
     const filename = path.basename(testFilepath);
     const dirname = path.dirname(testFilepath);
 
-    assert.strictEqual(filename, 'LoginForm.tsx');
-    assert.strictEqual(dirname, 'src/features/auth/components');
+    expect(filename).toBe('LoginForm.tsx');
+    expect(dirname).toBe('src/features/auth/components');
   });
 });
