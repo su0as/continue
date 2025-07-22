@@ -167,7 +167,7 @@ export function StepContainerPreToolbar({
       streamId: codeBlockStreamId,
       filepath: fileUri,
       text: codeBlockContent,
-      showSaveDialog: isCreatingNewFile,
+      showSaveDialog: !!isCreatingNewFile,
       toolCallId: forceToolCallId,
     });
 
