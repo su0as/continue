@@ -42,8 +42,8 @@ export const models: { [key: string]: ModelPackage } = {
     description: "A model from deekseek for chat",
     refUrl: "",
     params: {
-      title: "deepseek_v3",
-      model: "deepseek/deepseek_v3",
+      title: "deepseek-v3",
+      model: "deepseek/deepseek-v3",
       contextLength: 2048,
     },
     icon: "deepseek.png",
@@ -53,8 +53,8 @@ export const models: { [key: string]: ModelPackage } = {
         description: "The number of parameters in the model",
         options: {
           r1: {
-            model: "deepseek/deepseek_v3",
-            title: "deepseek_v3",
+            model: "deepseek/deepseek-v3",
+            title: "deepseek-v3",
           },
         },
       },
