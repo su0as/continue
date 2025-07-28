@@ -52,7 +52,7 @@ function getContentsForNewBlock(blockType: BlockType): ConfigYaml {
     case "docs":
       configYaml.docs = [
         {
-          name: "New docs",
+          name: "Continue Documentation",
           startUrl: "https://docs.continue.dev",
         },
       ];
