@@ -328,9 +328,9 @@ function insertEditableRegionTokensWithAst(
   const lineLength = lines[cursorPos.line].length;
   const charPos = Math.min(Math.max(0, cursorPos.character), lineLength);
 
-  (lines[cursorPos.line] =
+  ((lines[cursorPos.line] =
     lines[cursorPos.line].slice(0, charPos) + USER_CURSOR_IS_HERE_TOKEN),
-    lines[cursorPos.line].slice(charPos);
+    lines[cursorPos.line].slice(charPos));
 
   return lines;
 }

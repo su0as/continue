@@ -268,6 +268,32 @@ describe("PROVIDER_TOOL_SUPPORT", () => {
     });
   });
 
+  describe("openrouter", () => {
+    const supportsFn = PROVIDER_TOOL_SUPPORT["openrouter"];
+
+    it("should return false for free tier models", () => {
+      expect(supportsFn("moonshotai/kimi-k2:free")).toBe(false);
+      expect(supportsFn("anthropic/claude-3-haiku:free")).toBe(false);
+      expect(supportsFn("meta-llama/llama-3.2-3b-instruct:free")).toBe(false);
+    });
+
+    it("should return true for non-free supported models", () => {
+      expect(supportsFn("openai/gpt-4")).toBe(true);
+      expect(supportsFn("anthropic/claude-3-5-sonnet")).toBe(true);
+      expect(supportsFn("google/gemini-pro")).toBe(true);
+      expect(supportsFn("meta-llama/llama-3.1-8b-instruct")).toBe(true);
+    });
+
+    it("should return false for empty model names", () => {
+      expect(supportsFn("")).toBe(false);
+    });
+
+    it("should handle case insensitivity for free tier", () => {
+      expect(supportsFn("moonshotai/kimi-k2:FREE")).toBe(false);
+      expect(supportsFn("ANTHROPIC/CLAUDE-3-HAIKU:free")).toBe(false);
+    });
+  });
+
   describe("edge cases", () => {
     it("should handle empty model names", () => {
       expect(PROVIDER_TOOL_SUPPORT["continue-proxy"]("")).toBe(false);
@@ -276,6 +302,7 @@ describe("PROVIDER_TOOL_SUPPORT", () => {
       expect(PROVIDER_TOOL_SUPPORT["gemini"]("")).toBe(false);
       expect(PROVIDER_TOOL_SUPPORT["bedrock"]("")).toBe(false);
       expect(PROVIDER_TOOL_SUPPORT["ollama"]("")).toBe(false);
+      expect(PROVIDER_TOOL_SUPPORT["openrouter"]("")).toBe(false);
     });
 
     it("should handle non-existent provider", () => {
