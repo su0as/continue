@@ -238,7 +238,26 @@ export const PROVIDER_TOOL_SUPPORT: Record<string, (model: string) => boolean> =
       return false;
     },
     openrouter: (model) => {
-      // https://openrouter.ai/models?fmt=cards&supported_parameters=tools
+      // Specific free tier models that don't support tools
+      // Based on https://openrouter.ai/models?fmt=cards&q=free&supported_parameters=tools
+      const freeModelsWithoutTools = [
+        "moonshotai/kimi-k2:free",
+        "cognitivecomputations/dolphin-mixtral-8x7b:free",
+        "gryphe/mythomax-l2-13b:free",
+        "openchat/openchat-7b:free",
+        "huggingfaceh4/zephyr-7b-beta:free",
+        "undi95/toppy-m-7b:free",
+        "teknium/openhermes-2.5-mistral-7b:free",
+        "nousresearch/nous-capybara-7b:free",
+        "mistralai/mistral-7b-instruct:free",
+      ];
+      
+      // Check if this is a specific free model without tool support
+      if (freeModelsWithoutTools.some(freeModel => model.toLowerCase() === freeModel.toLowerCase())) {
+        return false;
+      }
+      
+      // General patterns that indicate no tool support
       if (
         ["vision", "math", "guard", "mistrallite", "mistral-openorca"].some(
           (part) => model.toLowerCase().includes(part),
@@ -296,15 +315,15 @@ export const PROVIDER_TOOL_SUPPORT: Record<string, (model: string) => boolean> =
         "arcee-ai/caller-large",
         "nousresearch/hermes-3-llama-3.1-70b",
       ];
-      for (const model of specificModels) {
-        if (model.toLowerCase() === model) {
+      for (const specificModel of specificModels) {
+        if (model.toLowerCase() === specificModel.toLowerCase()) {
           return true;
         }
       }
 
       const supportedContains = ["llama-3.1"];
-      for (const model of supportedContains) {
-        if (model.toLowerCase().includes(model)) {
+      for (const pattern of supportedContains) {
+        if (model.toLowerCase().includes(pattern)) {
           return true;
         }
       }
