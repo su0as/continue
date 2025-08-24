@@ -6,6 +6,7 @@ import {
 import GenerateTerminalCommand from "./cmd";
 import CommitMessageCommand from "./commit";
 import DraftIssueCommand from "./draftIssue";
+import GenerateDocsCommand from "./generateDocs";
 import HttpSlashCommand from "./http";
 import OnboardSlashCommand from "./onboard";
 import ReviewMessageCommand from "./review";
@@ -15,6 +16,7 @@ const LegacyBuiltInSlashCommands: SlashCommand[] = [
   DraftIssueCommand,
   ShareSlashCommand,
   GenerateTerminalCommand,
+  GenerateDocsCommand,
   HttpSlashCommand,
   CommitMessageCommand,
   ReviewMessageCommand,

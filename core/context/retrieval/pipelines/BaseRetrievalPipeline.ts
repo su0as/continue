@@ -126,7 +126,7 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
    * - Trigrams for semantic search (existing behavior)
    * - Unigram fallback for short queries
    * - Extension-based matching for common file types
-   * 
+   *
    * This ensures CSS files and other assets are properly retrieved
    * even with short queries like "css" or "styles.css".
    */
@@ -134,9 +134,10 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
     const matchClauses: string[] = [];
 
     // 1. Extract file-like tokens (e.g., "styles.css", "index.html")
-    const fileRegex = /[A-Za-z0-9_\-./]+?\.(css|scss|sass|less|js|ts|jsx|tsx|html?|vue|svelte|py|go|java|rs|rb|php|swift|kt|cpp|c|h|hpp|cs|m|mm|sql|xml|yaml|yml|json|md|mdx)\b/gi;
+    const fileRegex =
+      /[A-Za-z0-9_\-./]+?\.(css|scss|sass|less|js|ts|jsx|tsx|html?|vue|svelte|py|go|java|rs|rb|php|swift|kt|cpp|c|h|hpp|cs|m|mm|sql|xml|yaml|yml|json|md|mdx)\b/gi;
     const fileMatches = query.match(fileRegex) || [];
-    
+
     for (const file of fileMatches) {
       // Add path-specific search for exact filename
       matchClauses.push(`path:${this.escapeFtsQueryString(file)}`);
@@ -144,22 +145,22 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
 
     // 2. Check for file extension mentions and add path-based hints
     const extensionKeywords: Record<string, string[]> = {
-      'css': ['css', 'scss', 'sass', 'less'],
-      'stylesheet': ['css', 'scss', 'sass', 'less'],
-      'styles': ['css', 'scss', 'sass', 'less'],
-      'javascript': ['js', 'jsx', 'ts', 'tsx'],
-      'typescript': ['ts', 'tsx'],
-      'html': ['html', 'htm'],
-      'python': ['py'],
-      'golang': ['go'],
-      'java': ['java'],
-      'rust': ['rs'],
-      'ruby': ['rb'],
+      css: ["css", "scss", "sass", "less"],
+      stylesheet: ["css", "scss", "sass", "less"],
+      styles: ["css", "scss", "sass", "less"],
+      javascript: ["js", "jsx", "ts", "tsx"],
+      typescript: ["ts", "tsx"],
+      html: ["html", "htm"],
+      python: ["py"],
+      golang: ["go"],
+      java: ["java"],
+      rust: ["rs"],
+      ruby: ["rb"],
     };
 
     const lowerQuery = query.toLowerCase();
     const addedExtensions = new Set<string>();
-    
+
     for (const [keyword, extensions] of Object.entries(extensionKeywords)) {
       if (lowerQuery.includes(keyword)) {
         for (const ext of extensions) {
@@ -184,7 +185,7 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
     tokens = nlp.tokens.setOfWords(tokens);
 
     const cleanedTokens = [...tokens];
-    
+
     // Generate trigrams if we have enough tokens
     if (cleanedTokens.length >= 3) {
       const trigramString = cleanedTokens.join(" ");
@@ -193,16 +194,17 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
         matchClauses.push(this.escapeFtsQueryString(trigram));
       }
     }
-    
+
     // 4. Add unigram fallback if we have few trigrams
     // This ensures short queries like "css" still match content
-    const trigramCount = cleanedTokens.length >= 3 ? 
-      Math.max(0, cleanedTokens.length - 2) : 0;
-    
+    const trigramCount =
+      cleanedTokens.length >= 3 ? Math.max(0, cleanedTokens.length - 2) : 0;
+
     if (trigramCount < 2 && cleanedTokens.length > 0) {
       // Add individual tokens as fallback
       for (const token of cleanedTokens) {
-        if (token.length > 1) { // Skip single-character tokens
+        if (token.length > 1) {
+          // Skip single-character tokens
           matchClauses.push(this.escapeFtsQueryString(token));
         }
       }
@@ -221,7 +223,7 @@ export default class BaseRetrievalPipeline implements IRetrievalPipeline {
     }
 
     const matchString = this.buildFtsMatchString(args.query);
-    
+
     // If no valid match clauses were generated, return empty
     if (!matchString) {
       return [];

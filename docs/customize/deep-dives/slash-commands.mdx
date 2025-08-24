@@ -12,6 +12,18 @@ Slash commands are shortcuts that can be activated by typing '/' in a chat sessi
 
 Slash commands can be combined with additional instructions, including [context providers](../custom-providers) or highlighted code.
 
+## Built-in Slash Commands
+
+Continue includes several built-in slash commands for common tasks:
+
+- `/edit` - Edit the highlighted code with given instructions
+- `/comment` - Add comments to the highlighted code
+- `/share` - Export the current chat session to markdown
+- `/cmd` - Generate a terminal command
+- `/commit` - Generate a commit message
+- `/review` - Review code and give feedback
+- `/generate-docs` - Generate comprehensive documentation for selected code
+
 <Note>
   **Recommended approach**: Use prompt files to create slash commands instead of
   the deprecated `config.json` approach. The methods described below provide
@@ -34,3 +46,78 @@ Learn more about prompt files [here](./prompts).
 ### MCP Server Prompts
 
 Any prompts provided by [Model Context Protocol](https://modelcontextprotocol.io/introduction) servers are also accessible in chat as Slash Commands. See the [MCP Server Deep Dive](./mcp) for more details.
+
+## The `/generate-docs` Command
+
+The `/generate-docs` slash command helps you automatically generate comprehensive documentation for your code. It analyzes the selected code to understand its structure, purpose, and behavior.
+
+### Features
+
+- **File Selection Dropdown**: Interactive dropdown showing current project files
+- **Multi-file Support**: Select multiple files to document at once
+- **Specific Instructions**: Add custom instructions alongside file selection
+- **Comprehensive documentation**: Covers purpose, inputs, outputs, side effects, exceptions, usage examples, and dependencies
+- **Smart naming suggestions**: Suggests improved variable and function names when appropriate
+- **Multiple output formats**: Supports markdown, HTML, and JSON formats
+- **Flexible output options**: Save to file or copy to clipboard
+- **Customizable templates**: Adapt the documentation format to your needs
+
+### Usage
+
+#### Basic Usage
+1. Type `/generate-docs` in the chat
+2. A file selector dropdown will appear
+3. Browse and select files from your project
+4. Add any specific instructions in the chat
+5. Click "Generate Docs" to create documentation
+
+#### Alternative Methods
+- Select code in editor, then use `/generate-docs`
+- Specify files directly: `/generate-docs files:[src/index.js, lib/utils.ts]`
+- Add custom instructions: `/generate-docs Include API examples and error handling`
+
+### Examples
+
+```
+// Basic usage - opens file selector dropdown
+/generate-docs
+
+// Document specific files
+/generate-docs files:[src/api.js, src/database.js]
+
+// Add custom instructions
+/generate-docs Include performance considerations and security notes
+
+// Generate JSON format and save to file
+/generate-docs format:json save:./docs/api.json files:[src/index.js]
+
+// Generate HTML and copy to clipboard
+/generate-docs format:html clipboard:true
+```
+
+### File Selection Features
+
+#### Dropdown Interface
+- **Search/Filter**: Quick search to find files
+- **Tree Navigation**: Browse folder structure
+- **Multi-select**: Select multiple files with checkboxes
+- **Recent Files**: Quick access to recently used files
+- **Pinned Files**: Pin frequently used files for easy access
+- **File Preview**: Preview selected files before generating docs
+
+#### Keyboard Shortcuts
+- `Enter`: Confirm selection
+- `Esc`: Close dropdown
+- `Ctrl/Cmd + A`: Select all visible files
+- `Arrow keys`: Navigate file tree
+
+### Configuration
+
+You can customize the documentation template by modifying the prompt templates in your configuration. The command uses intelligent analysis to understand:
+
+- Function and class purposes
+- Parameter types and descriptions
+- Return values and their types
+- Error handling and exceptions
+- Side effects and dependencies
+- Best practices and usage patterns
